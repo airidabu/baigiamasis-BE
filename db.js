@@ -5,7 +5,7 @@ mongoose.connect(process.env.DB_URI)
         console.log("Connected to MongoDB successfully");
     })
     .catch((error) => {
-        console.log("Error connecting to MongoDB:", error);
+        console.error("Error connecting to MongoDB:", error);
     });
 
 process.on("SIGINT", async () => {
