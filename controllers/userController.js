@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const process = require("process");
 
 const User = require("../models/userModel");
 
@@ -10,7 +11,7 @@ const register = async (req, res) => {
         return res.status(400).json({ message: "Name, surname, email and password fields are required" });
     }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}:'"\\|,.<>/?]).{6,}$/;
     if (!passwordRegex.test(password)) {
         return res.status(400).json({
             message: "Password must be at least 6 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."
@@ -85,7 +86,7 @@ const updateUser = async (req, res) => {
         return res.status(400).json({ message: "Name, surname, email and password fields are required" });
     }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}:'"\\|,.<>/?]).{6,}$/;
     if (!passwordRegex.test(password)) {
         return res.status(400).json({
             message: "Password must be at least 6 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."

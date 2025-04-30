@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
+const process = require("process");
 
 const authMiddleware = (req, res, next) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
-    console.log("Token received"); // Avoid logging the raw token
 
     if (!token) {
         return res.status(401).json({ message: "No token provided" });
@@ -13,7 +13,7 @@ const authMiddleware = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(401).json({ message: "Invalid token" });
+        res.status(401).json({ message: "Invalid token", error: error });
     }
 }
 
