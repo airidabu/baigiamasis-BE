@@ -12,9 +12,11 @@ app.use(express.json());
 
 const userRoutes = require("./api/userEndpoints");
 const bookRoutes = require("./api/bookEndpoints");
+const genreRoutes = require("./api/genreEndpoints");
 
 app.use("/users", userRoutes);
 app.use("/books", bookRoutes);
+app.use("/genres", genreRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

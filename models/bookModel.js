@@ -20,7 +20,8 @@ const bookSchema = new mongoose.Schema({
         required: [true, "A book must have a release date"]
     },
     genres: {
-        type: [String],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Genre",
         required: [true, "A book must have at least one genre"]
     },
     pageNumber: {
