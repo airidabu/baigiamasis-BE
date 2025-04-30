@@ -77,7 +77,44 @@ const login = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    const { name, surname, email, password, birthday } = req.body;
+    const { id } = req.user;
+
+    if (!name || !surname || !email || !password) {
+        return res.status(400).json({ message: "Name, surname, email and password fields are required" });
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
+    if (!passwordRegex.test(password)) {
+        return res.status(400).json({
+            message: "Password must be at least 6 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character. You also need to sacrifice innocent virgin at the full moon to the password gods."
+        });
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            {
+                name,
+                surname,
+                email,
+                password: await bcrypt.hash(password, 10),
+                birthday
+            },
+            { new: true }
+        )
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.send({ message: "User updated successfully", user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating user", error });
+    }
+}
+
 module.exports = {
     register,
-    login
-}
+    login,
+    updateUser
+};
