@@ -93,6 +93,10 @@ const updateUser = async (req, res) => {
     }
 
     try {
+        if (req.user.role !== "admin" && req.user.id !== id) {
+            return res.status(403).json({ message: "You are not authorized to update this user" });
+        }
+
         const updatedUser = await User.findByIdAndUpdate(
             id,
             {
@@ -102,8 +106,9 @@ const updateUser = async (req, res) => {
                 password: await bcrypt.hash(password, 10),
                 birthday
             },
-            { new: true }
-        )
+            { new: true, runValidators: true }
+        );
+
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -113,8 +118,22 @@ const updateUser = async (req, res) => {
     }
 }
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select("-password -__v");
+        if (!users) {
+            return res.status(404).json({ message: "No users found" });
+        }
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Error fetching users", error: error.message });
+    }
+}
+
 module.exports = {
     register,
     login,
-    updateUser
+    updateUser,
+    getAllUsers
 };
