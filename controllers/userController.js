@@ -88,7 +88,7 @@ const updateUser = async (req, res) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
     if (!passwordRegex.test(password)) {
         return res.status(400).json({
-            message: "Password must be at least 6 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character. You also need to sacrifice innocent virgin at the full moon to the password gods."
+            message: "Password must be at least 6 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."
         });
     }
 
