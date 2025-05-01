@@ -14,7 +14,7 @@ const updateBookStatus = async (req, res) => {
         if (!book) {
             return res.status(404).json({ message: "Book not found" });
         }
-        const updatedStatus = await Status.findOneAndUpdate(
+        const updatedStatus = await Status.findByIdAndUpdate(
             book.status,
             { status, message },
             { new: true, upsert: true, runValidators: true }
