@@ -15,7 +15,7 @@ const bookSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    picureUrl: {
+    pictureUrl: {
         type: String,
         trim: true
     },
