@@ -19,6 +19,25 @@ const getAllBooks = async (req, res) => {
     }
 };
 
+const getPendingBooks = async (req, res) => {
+    try {
+        const books = await Book.find()
+            .populate("author", "name surname")
+            .populate("genres", "name")
+            .populate("publisher", "name")
+            .populate({
+                path: "status",
+                match: { status: "pending" },
+            });
+
+        const pendingBooks = books.filter(book => book.status);
+        res.status(200).json(pendingBooks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
 const getBookById = async (req, res) => {
     try {
         const book = await Book.findById(req.params.id).populate("author", "name surname").populate("genres", "name").populate("publisher", "name");
@@ -72,6 +91,7 @@ const deleteBook = async (req, res) => {
 
 module.exports = {
     getAllBooks,
+    getPendingBooks,
     getBookById,
     createBook,
     updateBook,
