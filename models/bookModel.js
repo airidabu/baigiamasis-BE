@@ -33,6 +33,11 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: [true, "A book must have a page number"],
         min: [1, "Page number must be at least 1"]
+    },
+    status: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Status",
+        required: [true, "A book must have a status"]
     }
 }, { timestamps: true });
 
