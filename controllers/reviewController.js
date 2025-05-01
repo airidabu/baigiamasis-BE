@@ -52,10 +52,14 @@ const updateReview = async (req, res) => {
 
 const deleteReview = async (req, res) => {
     try {
-        const deletedReview = await Review.findByIdAndDelete(req.params.id);
-        if (!deletedReview) {
+        const review = await Review.findById(req.params.id);
+        if (!review) {
             return res.status(404).json({ message: "Review not found" });
         }
+        if (review.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: "You are not authorized to delete this review" });
+        }
+        await Review.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Review deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
