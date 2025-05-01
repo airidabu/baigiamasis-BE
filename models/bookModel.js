@@ -15,6 +15,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    pictureUrl: {
+        type: String,
+        trim: true
+    },
     releaseDate: {
         type: Date,
         required: [true, "A book must have a release date"]
