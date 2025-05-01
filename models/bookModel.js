@@ -19,6 +19,11 @@ const bookSchema = new mongoose.Schema({
         type: Date,
         required: [true, "A book must have a release date"]
     },
+    publisher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Publisher",
+        required: [true, "A book must have a publisher"]
+    },
     genres: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Genre",
