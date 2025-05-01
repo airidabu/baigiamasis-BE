@@ -21,11 +21,17 @@ const getAllBooks = async (req, res) => {
 
 const getPendingBooks = async (req, res) => {
     try {
-        const books = await Book.find({ status: "pending" })
+        const books = await Book.find()
             .populate("author", "name surname")
             .populate("genres", "name")
             .populate("publisher", "name")
-        res.status(200).json(books);
+            .populate({
+                path: "status",
+                match: { status: "pending" },
+            });
+
+        const pendingBooks = books.filter(book => book.status);
+        res.status(200).json(pendingBooks);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
