@@ -14,11 +14,13 @@ const userRoutes = require("./api/userEndpoints");
 const bookRoutes = require("./api/bookEndpoints");
 const genreRoutes = require("./api/genreEndpoints");
 const reviewRoutes = require("./api/reviewEndpoints");
+const publisherRoutes = require("./api/publisherEndpoints");
 
 app.use("/users", userRoutes);
 app.use("/books", bookRoutes);
 app.use("/genres", genreRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/publishers", publisherRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

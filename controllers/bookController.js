@@ -2,7 +2,7 @@ const Book = require("../models/bookModel");
 
 const getAllBooks = async (req, res) => {
     try {
-        const books = await Book.find().populate("author", "name surname").populate("genres", "name");
+        const books = await Book.find().populate("author", "name surname").populate("genres", "name").populate("publisher", "name");
         res.status(200).json(books);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -11,7 +11,7 @@ const getAllBooks = async (req, res) => {
 
 const getBookById = async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id).populate("author", "name surname").populate("genres", "name");
+        const book = await Book.findById(req.params.id).populate("author", "name surname").populate("genres", "name").populate("publisher", "name");
         if (!book) {
             return res.status(404).json({ message: "Book not found" });
         }
