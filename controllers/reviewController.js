@@ -21,6 +21,19 @@ const getReviewById = async (req, res) => {
     }
 };
 
+const getReviewsByBookId = async (req, res) => {
+    try {
+        const bookId = req.params.bookId;
+        const reviews = await Review.find({ book: bookId })
+            .populate("user", "name surname")
+            .populate("book", "name");
+
+        res.status(200).json(reviews);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 const createReview = async (req, res) => {
     try {
         const review = new Review({
@@ -69,6 +82,7 @@ const deleteReview = async (req, res) => {
 module.exports = {
     getAllReviews,
     getReviewById,
+    getReviewsByBookId,
     createReview,
     updateReview,
     deleteReview
