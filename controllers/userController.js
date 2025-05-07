@@ -118,7 +118,21 @@ const updateUser = async (req, res) => {
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
         }
-        res.send({ message: "User updated successfully", user: updatedUser });
+
+        const newToken = jwt.sign(
+            {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                surname: updatedUser.surname,
+                email: updatedUser.email,
+                roles: updatedUser.role,
+                birthday: updatedUser.birthday
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+
+        )
+        res.send({ message: "User updated successfully", user: updatedUser, token: newToken });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error updating user", error });
@@ -138,9 +152,33 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    try {
+        const requestedUserId = req.params.id;
+        const currentUserId = req.user.id;
+        const userRole = req.user.role;
+
+        if (requestedUserId !== currentUserId && userRole !== "admin") {
+            return res.status(403).json({
+                message: "Access denied. You can only view your own profile data."
+            });
+        }
+
+        const user = await User.findById(requestedUserId).select("-password -__v");
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ message: "Error fetching user", error: error.message });
+    }
+}
+
 module.exports = {
     register,
     login,
     updateUser,
-    getAllUsers
+    getAllUsers,
+    getUserById
 };
