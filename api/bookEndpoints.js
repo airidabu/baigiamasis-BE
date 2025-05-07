@@ -5,8 +5,8 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
+router.get("/status/pending", authMiddleware, roleMiddleware(["admin"]), getPendingBooks);
 router.get("/", getAllBooks);
-router.get("/pending", authMiddleware, roleMiddleware(["admin"]), getPendingBooks);
 router.get("/:id", getBookById);
 router.post("/", authMiddleware, roleMiddleware(["author", "admin"]), createBook);
 router.put("/:id", authMiddleware, roleMiddleware(["author", "admin"]), updateBook);
