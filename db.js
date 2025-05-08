@@ -1,20 +1,28 @@
 const mongoose = require("mongoose");
+const process = require("process");
 
-mongoose.connect(process.env.DB_URI)
+mongoose
+    .connect(process.env.DB_URI)
     .then(() => {
-        console.log("Connected to MongoDB successfully");
+        console.log("✅ Successfully connected to MongoDB");
     })
     .catch((error) => {
-        console.error("Error connecting to MongoDB:", error);
+        console.error("❌ MongoDB connection error:", error.message);
+        process.exit(1);
     });
 
-process.on("SIGINT", async () => {
-    try {
-        await mongoose.connection.close();
-        console.log("MongoDB connection closed");
-        process.exit(0);
-    } catch (error) {
-        console.error("Error closing MongoDB connection:", error.message);
-        process.exit(1);
-    }
+mongoose.connection.on("error", (err) => {
+    console.error("MongoDB connection error:", err);
 });
+
+mongoose.connection.on("disconnected", () => {
+    console.warn("🔌 MongoDB disconnected");
+});
+
+process.on("SIGINT", async () => {
+    await mongoose.connection.close();
+    console.log("MongoDB connection closed due to app termination");
+    process.exit(0);
+});
+
+module.exports = mongoose.connection;
