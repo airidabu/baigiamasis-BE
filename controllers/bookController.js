@@ -4,6 +4,7 @@ const Status = require("../models/statusModel");
 const getAllBooks = async (req, res) => {
     try {
         const books = await Book.find()
+            .sort({ createdAt: -1 })
             .populate("author", "name surname")
             .populate("genres", "name")
             .populate("publisher", "name")
