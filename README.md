@@ -3,6 +3,9 @@
 ## Description
 This project is a **Book Management System** built with **Node.js** and **Express.js**. It provides a backend API for managing books, authors, genres, publishers, reviews, and user authentication. The system includes role-based access control (RBAC) to restrict certain actions to specific user roles (e.g., admin, author). The project uses **MongoDB** as the database and follows a modular structure for scalability and maintainability.
 
+## Frontend
+A frontend for this project is available at: [baigiamasis-FE](https://github.com/airidabu/baigiamasis-FE)
+
 ### Features
 - User registration and login with JWT-based authentication.
 - Role-based access control (admin, author, user).
